@@ -22,6 +22,12 @@ if ($role !== 'admin') {
 }
 // --- END ADMIN ROLE CHECK ---
 
+if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Method Not Allowed']);
+    exit;
+}
+
 // Get user ID from query (?id=123) or path (for demo, use query)
 $id = $_GET['id'] ?? null;
 if (!$id) {
