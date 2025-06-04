@@ -22,6 +22,12 @@ if ($role !== 'admin') {
 }
 // --- END ADMIN ROLE CHECK ---
 
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Method Not Allowed']);
+    exit;
+}
+
 $stmt = $pdo->query('SELECT id, username, email, role, created_at FROM users');
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

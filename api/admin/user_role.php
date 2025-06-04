@@ -22,10 +22,24 @@ if ($role !== 'admin') {
 }
 // --- END ADMIN ROLE CHECK ---
 
+// Allow PUT or POST
+$method = $_SERVER['REQUEST_METHOD'];
+if (!in_array($method, ['POST', 'PUT'])) {
+    http_response_code(405);
+    echo json_encode(['error' => 'Method Not Allowed']);
+    exit;
+}
+
 // Get user ID from query (?id=123) or path (for demo, use query)
 $id = $_GET['id'] ?? null;
-$input = json_decode(file_get_contents('php://input'), true);
-$newRole = $input['role'] ?? '';
+$contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+$newRole = '';
+if (stripos($contentType, 'application/json') !== false) {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $newRole = $input['role'] ?? '';
+} else {
+    $newRole = $_POST['role'] ?? '';
+}
 
 if (!$id || !in_array($newRole, ['client', 'vendor', 'admin'])) {
     http_response_code(400);
