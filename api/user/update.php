@@ -20,15 +20,28 @@ if (!in_array($method, ['POST', 'PUT'])) {
     exit;
 }
 
-// --- READ INPUT FROM form-data ---
-$username = trim($_POST['username'] ?? '');
-$oldPassword = $_POST['old_password'] ?? '';
-$newPassword = $_POST['new_password'] ?? '';
-$fullName = $_POST['full_name'] ?? '';
-$dateOfBirth = $_POST['date_of_birth'] ?? '';
-$phone = $_POST['phone'] ?? '';
-$address = $_POST['address'] ?? '';
-$profileImage = $_POST['profile_image'] ?? ''; // URL or file path
+// --- READ INPUT (form-data or JSON) ---
+$contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+if (stripos($contentType, 'application/json') !== false) {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $username     = trim($input['username'] ?? '');
+    $oldPassword  = $input['old_password'] ?? '';
+    $newPassword  = $input['new_password'] ?? '';
+    $fullName     = $input['full_name'] ?? '';
+    $dateOfBirth  = $input['date_of_birth'] ?? '';
+    $phone        = $input['phone'] ?? '';
+    $address      = $input['address'] ?? '';
+    $profileImage = $input['profile_image'] ?? ''; // URL or file path
+} else {
+    $username     = trim($_POST['username'] ?? '');
+    $oldPassword  = $_POST['old_password'] ?? '';
+    $newPassword  = $_POST['new_password'] ?? '';
+    $fullName     = $_POST['full_name'] ?? '';
+    $dateOfBirth  = $_POST['date_of_birth'] ?? '';
+    $phone        = $_POST['phone'] ?? '';
+    $address      = $_POST['address'] ?? '';
+    $profileImage = $_POST['profile_image'] ?? ''; // URL or file path
+}
 
 if (!$username) {
     http_response_code(400);
