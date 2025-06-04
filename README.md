@@ -66,6 +66,7 @@ Vendors list products on Freeblis. Clients can claim these products by scanning 
 - **claims:** user_id, product_id, claim_time, claim_token
 - **qr_codes:** product_id, token, status (active/claimed)
 - **sessions:** for token validation or JWT blacklist if needed
+- **password_logs:** audit trail for password changes
 
 ---
 
@@ -84,7 +85,7 @@ Vendors list products on Freeblis. Clients can claim these products by scanning 
     DB_USERNAME=root
     DB_PASSWORD=
     ```
-4. Run migrations to set up the database.
+4. Import `database/schema.sql` to create the tables.
 5. Start the server.
 
 ## 📄 License
